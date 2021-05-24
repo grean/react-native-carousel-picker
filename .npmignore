@@ -1,0 +1,10 @@
+example/
+src/
+node_modules/
+assets/
+notes/
+
+tsconfig.json
+.gitignore
+.DS_Store
+package-lock.json

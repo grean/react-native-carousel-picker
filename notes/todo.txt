@@ -1,0 +1,9 @@
+TODO
+  - voir le comportement du useEffect pour le fade
+  - FontSize avec le code react-native-responsive-dimensions recuperer le code de fontscale et tester
+  - faire le loader
+
+DONE
+  *- factoriser la config du spring effect
+  *- Tester les effets fadein et out 
+  *- Tester avec les phrases et sortir les valeurs généré dans picker
