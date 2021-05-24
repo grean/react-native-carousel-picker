@@ -1,6 +1,7 @@
 lib/
 node_modules/
 dist/
+notes/
 
 tsconfig.tsbuildinfo
 lerna-debug.log
