@@ -1,6 +1,6 @@
 {
   "name": "@grean/react-native-carousel-picker",
-  "version": "0.0.1-alpha.1",
+  "version": "0.0.1-alpha.2",
   "main": "lib/index.js",
   "types": "lib/index.d.ts",
   "source": "src/index",
@@ -8,6 +8,10 @@
     "build": "tsc",
     "watch": "tsc -w",
     "release": "release-it"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/grean/react-native-scale-text.git"
   },
   "dependencies": {
     "react-native-gesture-handler": "~1.10.2",
@@ -22,6 +26,17 @@
     "@babel/core": "~7.9.0",
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
+    "release-it": "*",
     "typescript": "4.2.4"
-  }
+  },
+  "release-it": {
+    "github": {
+      "release": true
+    }
+  },
+  "publishConfig": {
+    "registry": "https://registry.npmjs.org/",
+    "access": "public"
+  },
+  "license": "MIT"
 }
