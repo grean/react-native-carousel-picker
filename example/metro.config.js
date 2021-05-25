@@ -6,13 +6,24 @@
  */
 const pak = require('../package.json');
 const path = require('path');
+
+///Users/rgb/Projects/tests/react-native-carousel-picker
+const root = path.resolve(__dirname, '..');
+
+///Users/rgb/Projects/tests/react-native-carousel-picker/example
+console.log(`process ${process.cwd()}`);
+console.log(`dirname ${__dirname}`);
+
 const extraNodeModules = {
-  [pak.name]: path.resolve(__dirname + '/..'),
+  [pak.name]: root,
+
 };
+
 const watchFolders = [
-  path.resolve(__dirname + '/..'),
+  root,
 ];
 module.exports = {
+  projectRoot: __dirname,
   transformer: {
     getTransformOptions: async () => ({
       transform: {
@@ -26,7 +37,7 @@ module.exports = {
     extraNodeModules: new Proxy(extraNodeModules, {
       get: (target, name) =>
         //redirects dependencies referenced from pak.name to local node_modules
-        name in target ? target[name] : path.join(process.cwd(), `node_modules/${name}`),
+        name in target ? target[name] : path.join(process.cwd(), `node_modules/${name}`)
     }),
   },
   watchFolders,
