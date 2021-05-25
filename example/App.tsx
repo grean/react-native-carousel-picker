@@ -1,9 +1,10 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { StyleSheet, Text, View } from 'react-native';
-import Picker from '@grean/react-native-carousel-picker';
-import Data from './Data'
 import { useFonts } from 'expo-font';
+
+import Picker from '../src/index';
+import Data from './Data'
 
 export default function App() {
 
@@ -59,17 +60,15 @@ export default function App() {
             spaceBetween,
             textStyle: {
               fontFamily: 'cookie',
-              textShadowColor: 'rgba(0, 0, 0, 0.75)',
-              textShadowOffset: { width: -1, height: 1 },
-              textShadowRadius: 10,
+              // padding: 10,
+              // ...textShadow
             },
             containerStyle: {
-              backgroundColor: 'green',
-              // borderWidth: 2,
-              // borderColor: 'rgba(255,255,255,0.8)',
-              // borderRadius: 50,
-              // borderBottomWidth: 0,
-              // borderTopWidth: 0,
+              // backgroundColor: 'green',
+              // ...carouPicker,
+              // textShadowColor: 'rgba(0, 0, 0, 0.75)',
+              // textShadowOffset: { width: 3, height: 3 },
+              // textShadowRadius: 10,
             },
             fontSize,
           }}
