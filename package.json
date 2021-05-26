@@ -6,7 +6,7 @@
   "source": "src/index",
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w",
+    "watch": "tsc -w > watchTypescript.log &",
     "release": "release-it"
   },
   "repository": {
