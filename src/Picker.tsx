@@ -9,33 +9,13 @@ import Animated, {
 import { snapPoint } from "react-native-redash";
 
 import Item from "./Item";
+import type { DisplayType } from './types'
 
 
 type ContextType = {
   startX: number
   startY: number
   oldIndex: number
-}
-
-const getOpacityRangeOut = (display: string) => {
-  switch (display) {
-    case "TOP_BOTTOM":
-      return [0, 0.4, 1, 0.4, 0]
-    case "CENTER_ONLY":
-      return [0, 1, 0]
-    default:
-      return []
-  }
-}
-const getScaleRangeOut = (display: string) => {
-  switch (display) {
-    case "TOP_BOTTOM":
-      return [0, 0.4, 1, 0.4, 0]
-    case "CENTER_ONLY":
-      return [0, 1, 0]
-    default:
-      return []
-  }
 }
 
 export const getSpringConfig = (velocity: number = 400) => {
@@ -52,43 +32,42 @@ export const getSpringConfig = (velocity: number = 400) => {
   }
 }
 
-const defaultDisplay = "TOP_BOTTOM"
-const defaultSpaceBetween = 1 / 2.25
-
-type PickerProps<T> = {
-  allowFontScaling?: boolean
-  items: T[]
-  itemIndex: number
-  width: number
+interface PickerProps<T> {
+  currentItemIndex: number
   height: number
-  marginVerticalPercentage: number
-  marginHorizontalPercentage: number
-  onIndexChanged: (index: number) => void
-  display: "TOP_BOTTOM" | "CENTER_ONLY"
+  onCurrentIndexChanged: (index: number) => void
+  width: number
+  allowFontScaling?: boolean
+  containerStyle?: ViewStyle
+  discoverable?: boolean
+  display?: DisplayType
+  fontSize?: number
+  items?: T[]
+  marginHorizontalPercentage?: number
+  marginVerticalPercentage?: number
   opacityRangeOut?: number[]
   scaleRangeOut?: number[]
   spaceBetween?: number
   textStyle?: TextStyle
-  containerStyle?: ViewStyle
-  fontSize: number
 }
 
 const Picker = <T extends {}>({
   allowFontScaling,
-  items,
-  itemIndex,
-  width,
-  height,
-  onIndexChanged,
-  marginVerticalPercentage,
-  marginHorizontalPercentage,
-  display = defaultDisplay,
-  opacityRangeOut = getOpacityRangeOut(display),
-  scaleRangeOut = getScaleRangeOut(display),
-  spaceBetween = defaultSpaceBetween,
-  textStyle,
   containerStyle,
+  discoverable,
+  display,
   fontSize,
+  height,
+  items = [],
+  currentItemIndex,
+  marginHorizontalPercentage = 0,
+  marginVerticalPercentage = 0,
+  onCurrentIndexChanged,
+  opacityRangeOut,
+  scaleRangeOut,
+  spaceBetween,
+  textStyle,
+  width,
 }: PickerProps<T>) => {
   console.log(`RENDER Picker`)
   const scrollY = useSharedValue(0)
@@ -103,7 +82,7 @@ const Picker = <T extends {}>({
   // const itemHeight = containerHeight / 3
   const itemWidth = containerWidth
   // const indexOfValue = items.findIndex((v: ItemType) => v === items)
-  const contentOffsetY = -itemHeight * itemIndex
+  const contentOffsetY = -itemHeight * currentItemIndex
   const snapPoints = items.map((_, index) => index * -itemHeight)
 
   // console.log(`Platform ${Platform.OS} | marginVertical ${marginVertical} | containerHeight ${containerHeight} | itemWidth ${itemWidth} | itemHeight ${itemHeight} | contentOffsetY ${contentOffsetY}\nsnapPoints ${snapPoints}`)
@@ -113,7 +92,7 @@ const Picker = <T extends {}>({
   const onGestureEvent = useAnimatedGestureHandler<PanGestureHandlerGestureEvent, ContextType>({
     onStart: (event, ctx) => {
       if (ctx.oldIndex === undefined) {
-        ctx.oldIndex = itemIndex
+        ctx.oldIndex = currentItemIndex
       }
       ctx.startY = scrollY.value;
     },
@@ -127,59 +106,44 @@ const Picker = <T extends {}>({
       scrollX.value = withSpring(0, getSpringConfig(velocityY))
 
       scrollY.value = withSpring(dest, getSpringConfig(velocityY), (cancelled) => {
-        const itemIndex = Math.round(-dest / itemHeight)
-        if (cancelled && ctx.oldIndex !== itemIndex) {
-          onIndexChanged(itemIndex)
-          ctx.oldIndex = itemIndex
+        const currentItemIndex = Math.round(-dest / itemHeight)
+        if (cancelled && ctx.oldIndex !== currentItemIndex) {
+          onCurrentIndexChanged(currentItemIndex)
+          ctx.oldIndex = currentItemIndex
         }
       })
     },
   });
 
-  const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      marginVertical,
-      marginHorizontal,
-      // left: -marg,
-      paddingTop: itemHeight / 2 - marginVertical,
-      overflow: 'visible',
-      // borderWidth: 2,
-      // borderColor: 'rgba(255,255,255,0.8)',
-      // borderRadius: 50,
-      // borderBottomWidth: 0,
-      // borderTopWidth: 0,
-      // shadowOpacity: 1,
-      // // shadowColor: 'rgba(0, 0, 0, 0.75)',
-      // shadowOffset: { width: 3, height: 13 },
-      // shadowRadius: 10,
-      // borderLeftWidth: 0,
-      // borderRightWidth: 0,
-      // overflow: 'hidden',
-      backgroundColor: "transparent",
-    },
-  });
-
   return (
     <PanGestureHandler {...{ onGestureEvent }}>
-      <Animated.View style={[styles.container, containerStyle]}>
-        {/* <ReLabel {...{ scrollY }} /> */}
+      <Animated.View style={[{
+        flex: 1,
+        marginVertical,
+        marginHorizontal,
+        paddingTop: itemHeight / 2 - marginVertical,
+        overflow: 'visible',
+        backgroundColor: "transparent",
+      },
+        containerStyle
+      ]}>
         {items.map((value, index) => (
           <Item {...{
             allowFontScaling,
-            key: index,
-            height: itemHeight,
-            width: itemWidth,
-            spaceBetween: itemHeight * spaceBetween,
-            value,
-            scrollY,
-            scrollX,
-            index,
+            discoverable,
             display,
+            fontSize,
+            itemHeight,
+            index,
+            key: index,
+            scrollX,
+            scrollY,
             opacityRangeOut,
             scaleRangeOut,
+            spaceBetween,
             textStyle,
-            fontSize,
+            value,
+            itemWidth,
           }} />
         ))}
       </Animated.View>

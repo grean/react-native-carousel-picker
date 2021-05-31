@@ -4,49 +4,54 @@ import { runOnJS } from 'react-native-reanimated'
 
 // import Label from './Label'
 import Picker from './Picker'
+import { DisplayType } from './types'
 
 interface ViewportProps<T> {
+  itemIndex?: number
+  onChanged?: (index: number) => void
   allowFontScaling?: boolean
-  items: T[]
-  currentItemIndex: number
-  marginVerticalPercentage: number
-  marginHorizontalPercentage: number
-  onChanged: (index: number) => void
-  display: "TOP_BOTTOM" | "CENTER_ONLY"
+  containerStyle?: ViewStyle
+  discoverable?: boolean
+  display?: DisplayType
+  fontSize?: number
+  items?: T[]
+  marginHorizontalPercentage?: number
+  marginVerticalPercentage?: number
   opacityRangeOut?: number[]
   scaleRangeOut?: number[]
   spaceBetween?: number
   textStyle?: TextStyle
-  containerStyle?: ViewStyle
-  fontSize: number
 }
 
 const Viewport = <T extends {}>({
   allowFontScaling,
-  items,
-  currentItemIndex,
-  onChanged,
-  marginVerticalPercentage = 0,
-  marginHorizontalPercentage = 0,
+  containerStyle,
+  discoverable,
   display,
+  fontSize,
+  itemIndex = 0,
+  items,
+  marginHorizontalPercentage,
+  marginVerticalPercentage,
+  onChanged,
   opacityRangeOut,
   scaleRangeOut,
   spaceBetween,
   textStyle,
-  containerStyle,
-  fontSize,
 }: ViewportProps<T>) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null);
-  const [itemIndex, setItemIndex] = useState(currentItemIndex);
+  const [currentItemIndex, setCurrentItemIndex] = useState(itemIndex);
 
-  const onIndexChanged = (index: number) => {
+  const onCurrentIndexChanged = (index: number) => {
     'worklet'
     console.log(`setValue done ${index}`)
-    runOnJS(setItemIndex)(index)
+    runOnJS(setCurrentItemIndex)(index)
   }
 
   useEffect(() => {
-    onChanged(itemIndex)
+    if (onChanged !== undefined) {
+      onChanged(itemIndex)
+    }
   }, [itemIndex]);
 
   // const window = useWindowDimensions();
@@ -68,22 +73,21 @@ const Viewport = <T extends {}>({
         <Picker
           {...{
             allowFontScaling,
-            width: layout.width,
-            height: layout.height,
-            // width,
-            // height,
+            containerStyle,
+            currentItemIndex,
+            discoverable,
             display,
-            spaceBetween,
+            fontSize,
+            height: layout.height,
+            items,
+            marginHorizontalPercentage,
+            marginVerticalPercentage,
+            onCurrentIndexChanged,
             opacityRangeOut,
             scaleRangeOut,
-            items,
-            itemIndex,
-            onIndexChanged,
-            marginVerticalPercentage,
-            marginHorizontalPercentage,
+            spaceBetween,
             textStyle,
-            containerStyle,
-            fontSize,
+            width: layout.width,
           }}
         />
         {/* <View style={{ position: 'absolute', backgroundColor: 'red', width: 300, height: 1 }}>
