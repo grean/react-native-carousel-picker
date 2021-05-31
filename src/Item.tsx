@@ -1,30 +1,20 @@
 import React from "react";
-import { Image, StyleSheet, Dimensions, Alert, View, Text, PixelRatio } from "react-native";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import {
+  Image,
+  StyleSheet,
+  Dimensions,
+  Alert,
+  View,
+  Text,
+  PixelRatio,
+  TextStyle
+} from "react-native";
+// import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Animated, {
   Extrapolate,
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
-import { ItemType } from './Picker'
-import { TextStyleType } from './Viewport'
-
-interface ItemProps {
-  allowFontScaling?: boolean
-  display: "TOP_BOTTOM" | "CENTER_ONLY"
-  fontSize: number
-  height: number
-  index: number
-  opacityRangeOut: number[]
-  scaleRangeOut: number[]
-  scrollY: Animated.SharedValue<number>
-  scrollX: Animated.SharedValue<number>
-  spaceBetween: number
-  textStyle?: TextStyleType
-  // marginHorizontal?: number
-  value: ItemType
-  width: number
-}
 
 const getStatesInterval = (display: string, index: number, height: number) => {
   'worklet'
@@ -39,22 +29,39 @@ const getStatesInterval = (display: string, index: number, height: number) => {
 }
 const colors = ['#00b5ad', '#2185D0', '#B5CC18', '#FBBD08', '#F2711C', '#DB2828', '#E03997', '#6435C9', '#A5673F', '#AAA', '#888', '#666', '#444', '#222', '#000']
 
-const Item = ({
-  scrollY,
-  scrollX,
-  index,
-  value,
-  height,
-  width,
+interface ItemProps<T> {
+  allowFontScaling?: boolean
+  display: "TOP_BOTTOM" | "CENTER_ONLY"
+  fontSize: number
+  height: number
+  index: number
+  opacityRangeOut: number[]
+  scaleRangeOut: number[]
+  scrollY: Animated.SharedValue<number>
+  scrollX: Animated.SharedValue<number>
+  spaceBetween: number
+  textStyle?: TextStyle
+  // marginHorizontal?: number
+  value: T
+  width: number
+}
+
+const Item = <T extends {}>({
+  allowFontScaling = false,
   display,
+  fontSize = 200,
+  height,
+  index,
+  // marginHorizontal = 0,
   opacityRangeOut,
   scaleRangeOut,
+  scrollX,
+  scrollY,
   spaceBetween,
   textStyle,
-  fontSize = 200,
-  allowFontScaling = false,
-  // marginHorizontal = 0,
-}: ItemProps) => {
+  value,
+  width,
+}: ItemProps<T>) => {
   const animStyleContainer = useAnimatedStyle(() => {
     // console.log(`Item ${index}`)
     const statesInterval = getStatesInterval(display, index, height)
@@ -169,4 +176,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default Item;
+export default Item

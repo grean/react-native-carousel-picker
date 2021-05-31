@@ -1,39 +1,13 @@
 import React, { useEffect, useState } from 'react'
-import { View, Text, LayoutChangeEvent, StyleSheet } from 'react-native'
+import { View, Text, LayoutChangeEvent, StyleSheet, LayoutRectangle, ViewStyle, TextStyle } from 'react-native'
 import { runOnJS } from 'react-native-reanimated'
 
 // import Label from './Label'
-import Picker, { ItemsType } from './Picker'
+import Picker from './Picker'
 
-type ParentLayout = {
-  width: number
-  height: number
-}
-type TextShadowOffsetType = {
-  width: number
-  height: number
-}
-export type TextStyleType = {
-  fontFamily?: string
-  // fontSize?: number
-  backgroundColor?: string
-  color?: string
-  textShadowColor?: string
-  textShadowOffset?: TextShadowOffsetType
-  textShadowRadius?: number
-}
-export type ContainerStyleType = {
-  backgroundColor?: string
-  borderWidth?: number
-  borderColor?: string
-  borderRadius?: number
-  borderBottomWidth?: number
-  borderTopWidth?: number
-}
-
-interface ViewportProps {
+interface ViewportProps<T> {
   allowFontScaling?: boolean
-  items: ItemsType
+  items: T[]
   currentItemIndex: number
   marginVerticalPercentage: number
   marginHorizontalPercentage: number
@@ -42,12 +16,12 @@ interface ViewportProps {
   opacityRangeOut?: number[]
   scaleRangeOut?: number[]
   spaceBetween?: number
-  textStyle?: TextStyleType
-  containerStyle?: ContainerStyleType
+  textStyle?: TextStyle
+  containerStyle?: ViewStyle
   fontSize: number
 }
 
-function Viewport({
+const Viewport = <T extends {}>({
   allowFontScaling,
   items,
   currentItemIndex,
@@ -61,8 +35,8 @@ function Viewport({
   textStyle,
   containerStyle,
   fontSize,
-}: ViewportProps) {
-  const [layout, setLayout] = useState<ParentLayout | null>(null);
+}: ViewportProps<T>) => {
+  const [layout, setLayout] = useState<LayoutRectangle | null>(null);
   const [itemIndex, setItemIndex] = useState(currentItemIndex);
 
   const onIndexChanged = (index: number) => {
@@ -80,9 +54,9 @@ function Viewport({
   // console.log(`PICKER LAYOUT width ${layout?.width ?? 'null'} height ${layout?.height ?? 'null'}`)
   return (
     <View
-      onLayout={({ nativeEvent: { layout: { x, y, width, height } } }: LayoutChangeEvent) => {
+      onLayout={({ nativeEvent: { layout } }: LayoutChangeEvent) => {
         // console.log(`PICKER event x ${x} y ${y} width ${width} height ${height}`)
-        setLayout({ width, height })
+        setLayout(layout)
       }}
       style={[styles.child, {
         backgroundColor: 'transparent',

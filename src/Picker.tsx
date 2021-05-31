@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, PixelRatio, Platform } from "react-native";
+import { StyleSheet, PixelRatio, Platform, ViewStyle, TextStyle } from "react-native";
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedGestureHandler,
@@ -9,12 +9,7 @@ import Animated, {
 import { snapPoint } from "react-native-redash";
 
 import Item from "./Item";
-import { ContainerStyleType, TextStyleType } from './Viewport'
-// import ReLabel from "./ReLabel";
 
-export type ItemsType = number[] | string[]
-
-export type ItemType = number | string
 
 type ContextType = {
   startX: number
@@ -60,9 +55,9 @@ export const getSpringConfig = (velocity: number = 400) => {
 const defaultDisplay = "TOP_BOTTOM"
 const defaultSpaceBetween = 1 / 2.25
 
-type PickerProps = {
+type PickerProps<T> = {
   allowFontScaling?: boolean
-  items: ItemsType
+  items: T[]
   itemIndex: number
   width: number
   height: number
@@ -73,12 +68,12 @@ type PickerProps = {
   opacityRangeOut?: number[]
   scaleRangeOut?: number[]
   spaceBetween?: number
-  textStyle?: TextStyleType
-  containerStyle?: ContainerStyleType
+  textStyle?: TextStyle
+  containerStyle?: ViewStyle
   fontSize: number
 }
 
-const Picker = ({
+const Picker = <T extends {}>({
   allowFontScaling,
   items,
   itemIndex,
@@ -94,7 +89,7 @@ const Picker = ({
   textStyle,
   containerStyle,
   fontSize,
-}: PickerProps) => {
+}: PickerProps<T>) => {
   console.log(`RENDER Picker`)
   const scrollY = useSharedValue(0)
   const scrollX = useSharedValue(0)
@@ -109,7 +104,7 @@ const Picker = ({
   const itemWidth = containerWidth
   // const indexOfValue = items.findIndex((v: ItemType) => v === items)
   const contentOffsetY = -itemHeight * itemIndex
-  const snapPoints = items.map((_: ItemType, index: number) => index * -itemHeight)
+  const snapPoints = items.map((_, index) => index * -itemHeight)
 
   // console.log(`Platform ${Platform.OS} | marginVertical ${marginVertical} | containerHeight ${containerHeight} | itemWidth ${itemWidth} | itemHeight ${itemHeight} | contentOffsetY ${contentOffsetY}\nsnapPoints ${snapPoints}`)
 
@@ -169,7 +164,7 @@ const Picker = ({
     <PanGestureHandler {...{ onGestureEvent }}>
       <Animated.View style={[styles.container, containerStyle]}>
         {/* <ReLabel {...{ scrollY }} /> */}
-        {items.map((value: ItemType, index: number) => (
+        {items.map((value, index) => (
           <Item {...{
             allowFontScaling,
             key: index,

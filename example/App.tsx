@@ -7,26 +7,35 @@ import { useFonts } from 'expo-font';
 import Picker from '../src/index';
 import Data from './Data'
 
+const textShadow = {
+  textShadowColor: 'rgba(0, 0, 0, 0.75)',
+  textShadowOffset: { width: 3, height: 3 },
+  textShadowRadius: 10,
+}
+
+const carouPicker = {
+  // borderWidth: 0,
+  // borderWidth: 1,
+  borderColor: 'rgba(255,255,255,0.8)',
+  borderRadius: 50,
+  borderBottomWidth: 1,
+  borderTopWidth: 1,
+  borderLeftWidth: 0,
+  borderRightWidth: 0,
+}
+const carouPicker2 = {
+  // borderWidth: 0,
+  borderWidth: 2,
+  borderColor: 'rgba(255,255,255,0.8)',
+  borderRadius: 50,
+  borderBottomWidth: 0,
+  borderTopWidth: 0,
+}
+
+
 export default function App() {
-
-
-
   const currentItemIndex = 3
   const [itemIndex, setItemIndex] = useState(currentItemIndex);
-  const display = "TOP_BOTTOM"
-  // const spaceBetween = 0
-  const spaceBetween = 1 / 2.25
-  const opacityRangeOut = [0, 0.6, 1, 0.6, 0]
-  const scaleRangeOut = [0, 0.6, 1, 0.6, 0]
-  const items = Data.map(item => item.title)
-  const marginVerticalPercentage = 0
-  // const marginVerticalPercentage = 0.2
-  // const marginVerticalPercentage = 0
-  // const marginVerticalPercentage = 0.2
-  // const marginVerticalPercentage = 0.3
-  const marginHorizontalPercentage = 0
-  // const marginHorizontalPercentage = 0.05
-  const fontSize = 200
 
   const onChanged = (itemIndex: number) => {
     setItemIndex(itemIndex)
@@ -42,62 +51,109 @@ export default function App() {
     return null
   }
 
+  const items = Data.map(item => item.title)
+
   return (
-    <View style={styles.container}>
-      <View style={styles.container}>
-        <Text style={styles.item}>lol</Text>
-      </View>
-      <View style={styles.picker}>
+    <View style={{ flex: 1 }}>
+      <View style={styles.picker1}>
         <Picker
           {...{
             items,
             currentItemIndex,
             onChanged,
-            marginVerticalPercentage,
-            marginHorizontalPercentage,
-            display,
-            opacityRangeOut,
-            scaleRangeOut,
-            spaceBetween,
+            marginVerticalPercentage: 0,
+            marginHorizontalPercentage: 0.05,
+            display: "TOP_BOTTOM",
+            opacityRangeOut: [0, 0.6, 1, 0.6, 0],
+            scaleRangeOut: [0, 0.6, 1, 0.6, 0],
+            spaceBetween: 1 / 1.5,
             textStyle: {
               fontFamily: 'cookie',
               // padding: 10,
-              // ...textShadow
+              ...textShadow
             },
+            fontSize: 200,
+          }}
+        />
+      </View>
+      <View style={styles.picker2}>
+        <Picker
+          {...{
             containerStyle: {
               // backgroundColor: 'green',
-              // ...carouPicker,
+              ...carouPicker,
               // textShadowColor: 'rgba(0, 0, 0, 0.75)',
               // textShadowOffset: { width: 3, height: 3 },
               // textShadowRadius: 10,
             },
-            fontSize,
+            currentItemIndex,
+            display: "TOP_BOTTOM",
+            fontSize: 200,
+            items,
+            marginHorizontalPercentage: 0.1,
+            marginVerticalPercentage: 0.2,
+            // marginHorizontalPercentage: 0,
+            // marginVerticalPercentage: 0,
+            onChanged,
+            opacityRangeOut: [0, 0.6, 1, 0.6, 0],
+            scaleRangeOut: [0, 0.6, 1, 0.6, 0],
+            spaceBetween: 1 / 1.5,
+            textStyle: {
+              fontFamily: 'cookie',
+              // padding: 10,
+              ...textShadow
+            },
           }}
         />
       </View>
-      <View style={styles.container}>
-        <Text style={styles.item}>lol</Text>
+      <View style={styles.picker3}>
+        <Picker
+          {...{
+            containerStyle: {
+              // backgroundColor: 'green',
+              ...carouPicker2,
+              // textShadowColor: 'rgba(0, 0, 0, 0.75)',
+              // textShadowOffset: { width: 3, height: 3 },
+              // textShadowRadius: 10,
+            },
+            currentItemIndex,
+            display: "CENTER_ONLY",
+            fontSize: 400,
+            items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
+            marginHorizontalPercentage: 0.3,
+            marginVerticalPercentage: 0.22,
+            // marginHorizontalPercentage: 0,
+            // marginVerticalPercentage: 0,
+            onChanged,
+            // opacityRangeOut: [0, 0.6, 1, 0.6, 0],
+            // scaleRangeOut: [0, 0.6, 1, 0.6, 0],
+            spaceBetween: 1 / 1.5,
+            textStyle: {
+              fontFamily: 'cookie',
+              // padding: 10,
+              ...textShadow
+            },
+          }}
+        />
       </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 2,
+  picker1: {
+    flex: 1,
     backgroundColor: 'grey',
     justifyContent: 'center',
   },
-  picker: {
+  picker2: {
     flex: 1,
     backgroundColor: 'purple',
     justifyContent: 'center',
   },
-  item: {
-    fontSize: 30,
-    textAlign: 'center',
-    textShadowColor: 'rgba(0, 0, 0, 0.75)',
-    textShadowOffset: { width: 3, height: 3 },
-    textShadowRadius: 10,
-  }
+  picker3: {
+    flex: 1,
+    backgroundColor: 'green',
+    justifyContent: 'center',
+  },
 });
