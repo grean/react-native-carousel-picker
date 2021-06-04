@@ -12,7 +12,7 @@
     // "target": "es6",
     "module": "ESNext",
     "declaration": true,
-    "outDir": "./lib",
+    // "outDir": "./lib", // commented because of bob warning
     "strict": true,
     "jsx": "react-native",
     "skipLibCheck": true,

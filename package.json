@@ -1,13 +1,28 @@
 {
   "name": "@grean/react-native-carousel-picker",
   "version": "0.0.1-alpha.4",
-  "main": "lib/index.js",
-  "types": "lib/index.d.ts",
+  "main": "lib/commonjs/index.js",
+  "module": "lib/module/index.js",
+  "types": "lib/typescript/index.d.ts",
   "source": "src/index",
+  "react-native": "src/index.ts",
+  "files": [
+    "lib/",
+    "src/"
+  ],
+  "keywords": [
+    "carousel",
+    "picker",
+    "react-native",
+    "select",
+    "combo",
+    "dropdown"
+  ],
   "scripts": {
     "build": "tsc",
     "watch": "tsc -w > watchTypescript.log &",
-    "release": "release-it"
+    "release": "release-it",
+    "prepare": "bob build"
   },
   "repository": {
     "type": "git",
@@ -27,9 +42,9 @@
     "@types/react": "~16.9.35",
     "@types/react-native": "~0.63.2",
     "babel-plugin-groundskeeper-willie": "^1.3.2",
-    "babel-plugin-transform-remove-console": "^6.9.4",
     "react": "16.13.1",
     "react-native": "0.63.2",
+    "react-native-builder-bob": "^0.18.1",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-reanimated": "~2.1.0",
     "react-native-redash": "^16.0.11",
@@ -44,6 +59,25 @@
   "publishConfig": {
     "registry": "https://registry.npmjs.org/",
     "access": "public"
+  },
+  "react-native-builder-bob": {
+    "source": "src",
+    "output": "lib",
+    "targets": [
+      [
+        "commonjs",
+        {
+          "babelrc": true
+        }
+      ],
+      [
+        "module",
+        {
+          "babelrc": true
+        }
+      ],
+      "typescript"
+    ]
   },
   "license": "MIT"
 }
