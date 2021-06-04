@@ -17,7 +17,8 @@
     "jsx": "react-native",
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    // "removeComments": true,
   },
   "include": [
     "src/**/*"

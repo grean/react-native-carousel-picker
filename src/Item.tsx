@@ -1,11 +1,6 @@
 import React from "react";
 import {
-  Image,
-  StyleSheet,
   Dimensions,
-  Alert,
-  View,
-  Text,
   PixelRatio,
   TextStyle,
   ViewStyle
@@ -51,6 +46,9 @@ const getScaleRangeOut = (display: string) => {
       return []
   }
 }
+
+// const colors = ['#00b5ad', '#2185D0', '#B5CC18', '#FBBD08', '#F2711C', '#DB2828', '#E03997', '#6435C9', '#A5673F', '#AAA', '#888', '#666', '#444', '#222', '#000']
+
 
 interface ItemProps<T> {
   itemHeight: number
@@ -133,7 +131,8 @@ const Item = <T extends {}>({
     // console.log(`scrollX ${scrollX.value}`)
     return {
       // backgroundColor: colors[index],
-      left: Math.min(scrollX.value, 0)
+      // left: Math.min(scrollX.value, 0)
+      left: discoverable ? Math.min(scrollX.value, 0) : 0
     };
   });
 
@@ -141,42 +140,33 @@ const Item = <T extends {}>({
   const widthContainerPx = itemWidth * pixelRatio
   const heightContainerPx = itemHeight * pixelRatio
 
-  // const fontSize = 200
   const window = Dimensions.get('window')
   // height of iphone 12 pro max
   let coef = (2778 / (window.height * pixelRatio))
-  // if (coef > 1.5) {
-  //   coef /= 2
-  // }
 
-  // const coef = fontSize * (heightContainerPx / pixelRatio)
   let fontScaleDp = ((heightContainerPx + widthContainerPx) * (fontSize / coef)) / (heightContainerPx + widthContainerPx) / pixelRatio
-
-  // fontScaleDp = PixelRatio.roundToNearestPixel(fontScaleDp)
-
-
-
-
-
 
   return (
     <>
-      <Animated.View style={[styles.container, animStyleContainer]}>
+      <Animated.View style={[
+        {
+          justifyContent: "center",
+        },
+        animStyleContainer
+      ]}>
         <Animated.Text
           {...{
             allowFontScaling,
             ellipsizeMode: 'tail',
             numberOfLines: 1,
             style: [
-              styles.title,
               {
+                color: "white",
                 fontSize: fontScaleDp,
-                // fontSize: height * 0.77 * fontScale,
-                // padding: 10
-                // paddingVertical: 10,
+                textAlign: "center",
               },
+              animStyleTextItem,
               textStyle,
-              animStyleTextItem
             ]
           }}
         >
@@ -186,23 +176,5 @@ const Item = <T extends {}>({
     </>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    // borderWidth: 1,
-    // borderColor: 'white'
-    // backgroundColor: 'cyan',
-    // overflow: 'hidden',h
-  },
-  title: {
-    color: "white",
-    textAlign: "center",
-    // paddingHorizontal: 20,
-    // marginHorizontal: 50,
-    // fontFamily: 'cookie',
-    // backgroundColor: "green",
-    // fontSize: 40,
-  },
-});
 
 export default Item

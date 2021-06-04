@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, PixelRatio, Platform, ViewStyle, TextStyle } from "react-native";
+import { ViewStyle, TextStyle } from "react-native";
 import { PanGestureHandler, PanGestureHandlerGestureEvent } from "react-native-gesture-handler";
 import Animated, {
   useAnimatedGestureHandler,
@@ -13,7 +13,7 @@ import type { DisplayType } from './types'
 
 
 type ContextType = {
-  startX: number
+  // startX: number
   startY: number
   oldIndex: number
 }

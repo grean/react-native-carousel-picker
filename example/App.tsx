@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
 import { useFonts } from 'expo-font';
 
 // import Picker from '@grean/react-native-carousel-picker';
@@ -34,7 +34,8 @@ export default function App() {
   const items = Data.map(item => item.title)
 
   return (
-    <View style={{ flex: 1 }}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar hidden />
       <View style={styles.picker}>
         <Picker
           {...{
@@ -49,6 +50,7 @@ export default function App() {
             spaceBetween: 1 / 1.75,
             textStyle: {
               fontFamily: 'cookie',
+              paddingVertical: 10,
               // padding: 10,
               ...textShadow
             },
@@ -70,6 +72,7 @@ export default function App() {
             },
             itemIndex,
             display: "TOP_BOTTOM",
+            // discoverable: false,
             fontSize: 160,
             items,
             marginHorizontalPercentage: 0.1,
@@ -104,6 +107,7 @@ export default function App() {
             },
             itemIndex,
             display: "CENTER_ONLY",
+            discoverable: false,
             fontSize: 400,
             items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
             marginHorizontalPercentage: 0.3,
@@ -112,13 +116,13 @@ export default function App() {
             spaceBetween: 1 / 1.5,
             textStyle: {
               fontFamily: 'cookie',
-              // padding: 10,
+              // padding: 0,
               ...textShadow
             },
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
