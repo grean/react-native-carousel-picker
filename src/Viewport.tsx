@@ -7,16 +7,16 @@ import Picker from './Picker'
 import { DisplayType } from './types'
 
 interface ViewportProps<T> {
-  itemIndex?: number
-  onChanged?: (index: number) => void
   allowFontScaling?: boolean
   containerStyle?: ViewStyle
   discoverable?: boolean
   display?: DisplayType
   fontSize?: number
+  index?: number
   items?: T[]
   marginHorizontalPercentage?: number
   marginVerticalPercentage?: number
+  onChanged?: (index: number) => void
   opacityRangeOut?: number[]
   scaleRangeOut?: number[]
   spaceBetween?: number
@@ -29,7 +29,7 @@ const Viewport = <T extends {}>({
   discoverable,
   display,
   fontSize,
-  itemIndex = 0,
+  index = 0,
   items,
   marginHorizontalPercentage,
   marginVerticalPercentage,
@@ -40,19 +40,19 @@ const Viewport = <T extends {}>({
   textStyle,
 }: ViewportProps<T>) => {
   const [layout, setLayout] = useState<LayoutRectangle | null>(null);
-  const [currentItemIndex, setCurrentItemIndex] = useState(itemIndex);
+  const [currentItemIndex, setCurrentItemIndex] = useState(index);
 
-  const onCurrentIndexChanged = (index: number) => {
+  const onCurrentIndexChanged = (newIndex: number) => {
     'worklet'
-    console.log(`setValue done ${index}`)
-    runOnJS(setCurrentItemIndex)(index)
+    console.log(`setValue done ${newIndex}`)
+    runOnJS(setCurrentItemIndex)(newIndex)
   }
 
   useEffect(() => {
     if (onChanged !== undefined) {
-      onChanged(itemIndex)
+      onChanged(index)
     }
-  }, [itemIndex]);
+  }, [index]);
 
   // const window = useWindowDimensions();
   // console.log(`WINDOW width ${window.width} height ${window.height}`)

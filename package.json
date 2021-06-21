@@ -7,7 +7,6 @@
   "source": "src/index",
   "react-native": "src/index.ts",
   "files": [
-    "lib/",
     "src/"
   ],
   "keywords": [
@@ -20,7 +19,7 @@
   ],
   "scripts": {
     "build": "tsc",
-    "watch": "tsc -w > watchTypescript.log &",
+    "watch": "tsc -w --outDir ./lib/commonjs > watchTypescript.log &",
     "release": "release-it",
     "prepare": "bob build"
   },

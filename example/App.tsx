@@ -14,11 +14,11 @@ const textShadow = {
 }
 
 export default function App() {
-  const itemIndex = 3
-  const [currentItemIndex, setCurrentItemIndex] = useState(itemIndex);
+  const currentItemIndex = 3
+  const [itemIndex, setItemIndex] = useState(currentItemIndex);
 
   const onChanged = (index: number) => {
-    setCurrentItemIndex(index)
+    setItemIndex(index)
     console.log(`onChanged index ${index}`)
   }
 
@@ -40,7 +40,7 @@ export default function App() {
         <Picker
           {...{
             items,
-            itemIndex,
+            index: itemIndex,
             onChanged,
             marginVerticalPercentage: 0,
             marginHorizontalPercentage: 0.05,
