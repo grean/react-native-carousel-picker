@@ -69,7 +69,7 @@ const Picker = <T extends {}>({
   textStyle,
   width,
 }: PickerProps<T>) => {
-  console.log(`RENDER Picker`)
+  // console.log(`RENDER Picker`)
   const scrollY = useSharedValue(0)
   const scrollX = useSharedValue(0)
   const marginVertical = height * marginVerticalPercentage

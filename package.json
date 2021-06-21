@@ -1,13 +1,12 @@
 {
   "name": "@grean/react-native-carousel-picker",
-  "version": "0.0.1-alpha.4",
+  "version": "0.0.1-alpha.10",
   "main": "lib/commonjs/index.js",
   "module": "lib/module/index.js",
   "types": "lib/typescript/index.d.ts",
   "source": "src/index",
-  "react-native": "src/index.ts",
   "files": [
-    "src/"
+    "lib"
   ],
   "keywords": [
     "carousel",

@@ -39,20 +39,34 @@ const Viewport = <T extends {}>({
   spaceBetween,
   textStyle,
 }: ViewportProps<T>) => {
+  console.log(`RENDER Viewport`)
   const [layout, setLayout] = useState<LayoutRectangle | null>(null);
-  const [currentItemIndex, setCurrentItemIndex] = useState(index);
+  // const [currentItemIndex, setCurrentItemIndex] = useState(index);
 
   const onCurrentIndexChanged = (newIndex: number) => {
     'worklet'
-    console.log(`setValue done ${newIndex}`)
-    runOnJS(setCurrentItemIndex)(newIndex)
+    // console.log(`onCurrentIndexChanged ${newIndex}`)
+    // runOnJS(setCurrentItemIndex)(newIndex)
+    if (onChanged !== undefined) {
+      runOnJS(onChanged)(newIndex)
+    }
   }
 
-  useEffect(() => {
-    if (onChanged !== undefined) {
-      onChanged(index)
-    }
-  }, [index]);
+  // useEffect(() => {
+  //   console.log(`Viewport effect controlled index ${index}`)
+  //   if (onChanged !== undefined && index !== currentItemIndex) {
+  //     setCurrentItemIndex(index)
+  //     // onChanged(currentItemIndex)
+  //   }
+  // }, [index]);
+
+  // useEffect(() => {
+  //   console.log(`Viewport effect currentItemIndex ${currentItemIndex}`)
+  //   if (onChanged !== undefined && index !== currentItemIndex) {
+  //     // setCurrentItemIndex(index)
+  //     onChanged(currentItemIndex)
+  //   }
+  // }, [currentItemIndex]);
 
   // const window = useWindowDimensions();
   // console.log(`WINDOW width ${window.width} height ${window.height}`)
@@ -60,7 +74,7 @@ const Viewport = <T extends {}>({
   return (
     <View
       onLayout={({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-        // console.log(`PICKER event x ${x} y ${y} width ${width} height ${height}`)
+        console.log(`Viewport event x ${layout.x} y ${layout.y} width ${layout.width} height ${layout.height}`)
         setLayout(layout)
       }}
       style={[styles.child, {
@@ -74,7 +88,7 @@ const Viewport = <T extends {}>({
           {...{
             allowFontScaling,
             containerStyle,
-            currentItemIndex,
+            currentItemIndex: index,
             discoverable,
             display,
             fontSize,

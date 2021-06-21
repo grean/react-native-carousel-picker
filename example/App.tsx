@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, SafeAreaView } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Button } from 'react-native';
 import { useFonts } from 'expo-font';
 
 // import Picker from '@grean/react-native-carousel-picker';
@@ -14,12 +14,13 @@ const textShadow = {
 }
 
 export default function App() {
+  console.log(`RENDER App`)
   const currentItemIndex = 3
   const [itemIndex, setItemIndex] = useState(currentItemIndex);
 
   const onChanged = (index: number) => {
-    setItemIndex(index)
     console.log(`onChanged index ${index}`)
+    setItemIndex(index)
   }
 
   let [fontsLoaded] = useFonts({
@@ -36,6 +37,19 @@ export default function App() {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <StatusBar hidden />
+      <View style={{ flex: 0.2, justifyContent: 'center', flexDirection: 'row' }}>
+        <Button
+          {...{
+            title: '1',
+            onPress: () => setItemIndex(1)
+          }} />
+        <Button
+          {...{
+            title: '5',
+            onPress: () => setItemIndex(5)
+          }} />
+        <Text>{itemIndex}</Text>
+      </View>
       <View style={styles.picker}>
         <Picker
           {...{
@@ -70,10 +84,10 @@ export default function App() {
               // textShadowOffset: { width: 3, height: 3 },
               // textShadowRadius: 10,
             },
-            itemIndex,
             display: "TOP_BOTTOM",
             // discoverable: false,
             fontSize: 160,
+            index: itemIndex,
             items,
             marginHorizontalPercentage: 0.1,
             marginVerticalPercentage: 0.2,
@@ -105,10 +119,10 @@ export default function App() {
               // textShadowOffset: { width: 3, height: 3 },
               // textShadowRadius: 10,
             },
-            itemIndex,
             display: "CENTER_ONLY",
             discoverable: false,
             fontSize: 400,
+            index: itemIndex,
             items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
             marginHorizontalPercentage: 0.3,
             marginVerticalPercentage: 0.22,
