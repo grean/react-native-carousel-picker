@@ -1,5 +1,5 @@
 # react-native-carousel-picker
-Carousel-picker is a component that allows you to display your data in a circular select/dropbox way.<br/>
+Carousel-picker is a component that allows you to display your data in a circular select/dropdown way.<br/>
 It's a full typescript responsive component that uses reanimated 2.<br/>
 The work is still in progress but you can use it and improve it if you want! PR are welcome.<br/>
 <br/>
@@ -19,15 +19,17 @@ yarn add @grean/react-native-carousel-picker
 ```
 
 ## Usage
+You can control the picker value with the ```index``` prop.<br/>
+When you manually change the value, ```onChanged``` callback will be called.<br/>
+You can pass an array of primitives for your values with the ```items``` prop.
 
 ```tsx
 const currentItemIndex = 1
-const [itemIndex, setItemIndex] = useState(currentItemIndex);
-const items = [1, 2, 3, 4, 5]
+const [index, setIndex] = useState(currentItemIndex);
+const items = [1, 2, 3, 4, 5] //or ['one', 'two', 'three'...]
 
-const onChanged = (index: number) => {
-  setItemIndex(index)
-  console.log(`onChanged index ${index}`)
+const onChanged = (newIndex: number) => {
+  setIndex(newIndex)
 }
 
 //removed code for brevety
@@ -37,7 +39,7 @@ const onChanged = (index: number) => {
     <Picker
       {...{
         items,
-        index: itemIndex,
+        index,
         onChanged,
         marginHorizontalPercentage: 0.05,
         spaceBetween: 1 / 1.75,
@@ -56,7 +58,7 @@ const onChanged = (index: number) => {
 ```tsx
 interface ViewportProps<T> {
   allowFontScaling?: boolean //false: see RN Text prop
-  containerStyle?: ViewStyle // all view style props
+  containerStyle?: ViewStyle //All view style props
   discoverable?: boolean //true: allow horizontal swipe to discover hidden item's part
   display?: DisplayType //"TOP_BOTTOM": one of those "TOP_BOTTOM" | "CENTER_ONLY"
   fontSize?: number //200: fontsize value
@@ -65,10 +67,10 @@ interface ViewportProps<T> {
   marginHorizontalPercentage?: number //0: pourcentage of width container, ie: 0.05
   marginVerticalPercentage?: number //0: pourcentage of height container, ie: 0.05
   onChanged?: (index: number) => void //Callback called when selected index changed
-  opacityRangeOut?: number[] //Opacity interpolation threshold for items. Default value depends on display prop mode but you can still override them, ie: [0, 0.6, 1, 0.6, 0]
-  scaleRangeOut?: number[] //Scale interpolation threshold for items. Default value depends on display prop mode but you can still override them, ie: [0, 0.6, 1, 0.6, 0]
+  opacityRangeOut?: number[] //Opacity interpolation thresholds for items. Default value depends on display prop mode but you can still override them, ie: [0, 0.6, 1, 0.6, 0]
+  scaleRangeOut?: number[] //Scale interpolation thresholds for items. Default value depends on display prop mode but you can still override them, ie: [0, 0.6, 1, 0.6, 0]
   spaceBetween?: number //1 / 2.25: space between displayed items 
-  textStyle?: TextStyle //all RN Text style props
+  textStyle?: TextStyle //All RN Text style props
 }
 ```
 
@@ -82,7 +84,7 @@ yarn ios
 ```
 
 ## About
-If you want to eat well and healthy, i recommand you to check out my mobile app [Dietethic.net](https://dietethic.net)<br/>
+If you want to eat well and healthy, i recommand you to check out our mobile app [Dietethic.net](https://dietethic.net)<br/>
 
 <a align="center" href="https://github.com/grean?tab=followers">
   <img src="https://img.shields.io/github/followers/grean?label=Follow%20%40grean&style=social" />
