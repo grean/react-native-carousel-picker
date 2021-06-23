@@ -3,7 +3,14 @@
     "@babel/preset-typescript"
   ],
   "plugins": [
-    "babel-plugin-groundskeeper-willie"
+    [
+      "groundskeeper-willie",
+      {
+        "removeConsole": true,
+        "removeDebugger": true,
+        "removePragma": true
+      }
+    ]
   ],
   "comments": false
 }

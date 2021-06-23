@@ -12,13 +12,13 @@
     "carousel",
     "picker",
     "react-native",
+    "reanimated",
     "select",
     "combo",
     "dropdown"
   ],
   "scripts": {
-    "build": "tsc",
-    "watch": "tsc -w --outDir ./lib/commonjs > watchTypescript.log &",
+    "watch": "nodemon -e js,ts,tsx --watch src --exec yarn prepare",
     "release": "release-it",
     "prepare": "bob build"
   },
