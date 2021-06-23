@@ -4,50 +4,69 @@ import { runOnJS } from 'react-native-reanimated'
 
 // import Label from './Label'
 import Picker from './Picker'
+import { DisplayType } from './types'
 
 interface ViewportProps<T> {
   allowFontScaling?: boolean
-  items: T[]
-  currentItemIndex: number
-  marginVerticalPercentage: number
-  marginHorizontalPercentage: number
-  onChanged: (index: number) => void
-  display: "TOP_BOTTOM" | "CENTER_ONLY"
+  containerStyle?: ViewStyle
+  discoverable?: boolean
+  display?: DisplayType
+  fontSize?: number
+  index?: number
+  items?: T[]
+  marginHorizontalPercentage?: number
+  marginVerticalPercentage?: number
+  onChanged?: (index: number) => void
   opacityRangeOut?: number[]
   scaleRangeOut?: number[]
   spaceBetween?: number
   textStyle?: TextStyle
-  containerStyle?: ViewStyle
-  fontSize: number
 }
 
 const Viewport = <T extends {}>({
   allowFontScaling,
-  items,
-  currentItemIndex,
-  onChanged,
-  marginVerticalPercentage = 0,
-  marginHorizontalPercentage = 0,
+  containerStyle,
+  discoverable,
   display,
+  fontSize,
+  index = 0,
+  items,
+  marginHorizontalPercentage,
+  marginVerticalPercentage,
+  onChanged,
   opacityRangeOut,
   scaleRangeOut,
   spaceBetween,
   textStyle,
-  containerStyle,
-  fontSize,
 }: ViewportProps<T>) => {
+  console.log(`RENDER Viewport`)
   const [layout, setLayout] = useState<LayoutRectangle | null>(null);
-  const [itemIndex, setItemIndex] = useState(currentItemIndex);
+  // const [currentItemIndex, setCurrentItemIndex] = useState(index);
 
-  const onIndexChanged = (index: number) => {
+  const onCurrentIndexChanged = (newIndex: number) => {
     'worklet'
-    console.log(`setValue done ${index}`)
-    runOnJS(setItemIndex)(index)
+    // console.log(`onCurrentIndexChanged ${newIndex}`)
+    // runOnJS(setCurrentItemIndex)(newIndex)
+    if (onChanged !== undefined) {
+      runOnJS(onChanged)(newIndex)
+    }
   }
 
-  useEffect(() => {
-    onChanged(itemIndex)
-  }, [itemIndex]);
+  // useEffect(() => {
+  //   console.log(`Viewport effect controlled index ${index}`)
+  //   if (onChanged !== undefined && index !== currentItemIndex) {
+  //     setCurrentItemIndex(index)
+  //     // onChanged(currentItemIndex)
+  //   }
+  // }, [index]);
+
+  // useEffect(() => {
+  //   console.log(`Viewport effect currentItemIndex ${currentItemIndex}`)
+  //   if (onChanged !== undefined && index !== currentItemIndex) {
+  //     // setCurrentItemIndex(index)
+  //     onChanged(currentItemIndex)
+  //   }
+  // }, [currentItemIndex]);
 
   // const window = useWindowDimensions();
   // console.log(`WINDOW width ${window.width} height ${window.height}`)
@@ -55,7 +74,7 @@ const Viewport = <T extends {}>({
   return (
     <View
       onLayout={({ nativeEvent: { layout } }: LayoutChangeEvent) => {
-        // console.log(`PICKER event x ${x} y ${y} width ${width} height ${height}`)
+        console.log(`Viewport event x ${layout.x} y ${layout.y} width ${layout.width} height ${layout.height}`)
         setLayout(layout)
       }}
       style={[styles.child, {
@@ -68,22 +87,21 @@ const Viewport = <T extends {}>({
         <Picker
           {...{
             allowFontScaling,
-            width: layout.width,
-            height: layout.height,
-            // width,
-            // height,
+            containerStyle,
+            currentItemIndex: index,
+            discoverable,
             display,
-            spaceBetween,
+            fontSize,
+            height: layout.height,
+            items,
+            marginHorizontalPercentage,
+            marginVerticalPercentage,
+            onCurrentIndexChanged,
             opacityRangeOut,
             scaleRangeOut,
-            items,
-            itemIndex,
-            onIndexChanged,
-            marginVerticalPercentage,
-            marginHorizontalPercentage,
+            spaceBetween,
             textStyle,
-            containerStyle,
-            fontSize,
+            width: layout.width,
           }}
         />
         {/* <View style={{ position: 'absolute', backgroundColor: 'red', width: 300, height: 1 }}>

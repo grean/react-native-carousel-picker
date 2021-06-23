@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, SafeAreaView, Button } from 'react-native';
 import { useFonts } from 'expo-font';
 
 // import Picker from '@grean/react-native-carousel-picker';
@@ -13,33 +13,14 @@ const textShadow = {
   textShadowRadius: 10,
 }
 
-const carouPicker = {
-  // borderWidth: 0,
-  // borderWidth: 1,
-  borderColor: 'rgba(255,255,255,0.8)',
-  borderRadius: 50,
-  borderBottomWidth: 1,
-  borderTopWidth: 1,
-  borderLeftWidth: 0,
-  borderRightWidth: 0,
-}
-const carouPicker2 = {
-  // borderWidth: 0,
-  borderWidth: 2,
-  borderColor: 'rgba(255,255,255,0.8)',
-  borderRadius: 50,
-  borderBottomWidth: 0,
-  borderTopWidth: 0,
-}
-
-
 export default function App() {
+  console.log(`RENDER App`)
   const currentItemIndex = 3
   const [itemIndex, setItemIndex] = useState(currentItemIndex);
 
-  const onChanged = (itemIndex: number) => {
-    setItemIndex(itemIndex)
-    console.log(`onChanged itemIndex ${itemIndex}`)
+  const onChanged = (index: number) => {
+    console.log(`onChanged index ${index}`)
+    setItemIndex(index)
   }
 
   let [fontsLoaded] = useFonts({
@@ -54,21 +35,36 @@ export default function App() {
   const items = Data.map(item => item.title)
 
   return (
-    <View style={{ flex: 1 }}>
-      <View style={styles.picker1}>
+    <SafeAreaView style={{ flex: 1 }}>
+      <StatusBar hidden />
+      <View style={{ flex: 0.2, justifyContent: 'center', flexDirection: 'row' }}>
+        <Button
+          {...{
+            title: '1',
+            onPress: () => setItemIndex(1)
+          }} />
+        <Button
+          {...{
+            title: '5',
+            onPress: () => setItemIndex(5)
+          }} />
+        <Text>{itemIndex}</Text>
+      </View>
+      <View style={styles.picker}>
         <Picker
           {...{
             items,
-            currentItemIndex,
+            index: itemIndex,
             onChanged,
             marginVerticalPercentage: 0,
             marginHorizontalPercentage: 0.05,
             display: "TOP_BOTTOM",
             opacityRangeOut: [0, 0.6, 1, 0.6, 0],
             scaleRangeOut: [0, 0.6, 1, 0.6, 0],
-            spaceBetween: 1 / 1.5,
+            spaceBetween: 1 / 1.75,
             textStyle: {
               fontFamily: 'cookie',
+              paddingVertical: 10,
               // padding: 10,
               ...textShadow
             },
@@ -80,15 +76,18 @@ export default function App() {
         <Picker
           {...{
             containerStyle: {
-              // backgroundColor: 'green',
-              ...carouPicker,
+              backgroundColor: 'rgba(0,0,0,0.2)',
+              borderWidth: 2,
+              borderColor: 'rgba(255,255,255,0.5)',
+              borderRadius: 50,
               // textShadowColor: 'rgba(0, 0, 0, 0.75)',
               // textShadowOffset: { width: 3, height: 3 },
               // textShadowRadius: 10,
             },
-            currentItemIndex,
             display: "TOP_BOTTOM",
-            fontSize: 200,
+            // discoverable: false,
+            fontSize: 160,
+            index: itemIndex,
             items,
             marginHorizontalPercentage: 0.1,
             marginVerticalPercentage: 0.2,
@@ -100,7 +99,7 @@ export default function App() {
             spaceBetween: 1 / 1.5,
             textStyle: {
               fontFamily: 'cookie',
-              // padding: 10,
+              padding: 20,
               ...textShadow
             },
           }}
@@ -111,37 +110,38 @@ export default function App() {
           {...{
             containerStyle: {
               // backgroundColor: 'green',
-              ...carouPicker2,
+              borderWidth: 2,
+              borderColor: 'rgba(255,255,255,0.8)',
+              borderRadius: 50,
+              borderBottomWidth: 0,
+              borderTopWidth: 0,
               // textShadowColor: 'rgba(0, 0, 0, 0.75)',
               // textShadowOffset: { width: 3, height: 3 },
               // textShadowRadius: 10,
             },
-            currentItemIndex,
             display: "CENTER_ONLY",
+            discoverable: false,
             fontSize: 400,
+            index: itemIndex,
             items: [1, 2, 3, 4, 5, 6, 7, 8, 9],
             marginHorizontalPercentage: 0.3,
             marginVerticalPercentage: 0.22,
-            // marginHorizontalPercentage: 0,
-            // marginVerticalPercentage: 0,
             onChanged,
-            // opacityRangeOut: [0, 0.6, 1, 0.6, 0],
-            // scaleRangeOut: [0, 0.6, 1, 0.6, 0],
             spaceBetween: 1 / 1.5,
             textStyle: {
               fontFamily: 'cookie',
-              // padding: 10,
+              // padding: 0,
               ...textShadow
             },
           }}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
-  picker1: {
+  picker: {
     flex: 1,
     backgroundColor: 'grey',
     justifyContent: 'center',

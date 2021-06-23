@@ -1,13 +1,9 @@
 import React from "react";
 import {
-  Image,
-  StyleSheet,
   Dimensions,
-  Alert,
-  View,
-  Text,
   PixelRatio,
-  TextStyle
+  TextStyle,
+  ViewStyle
 } from "react-native";
 // import { TouchableWithoutFeedback } from "react-native-gesture-handler";
 import Animated, {
@@ -15,6 +11,8 @@ import Animated, {
   interpolate,
   useAnimatedStyle,
 } from "react-native-reanimated";
+
+import { DisplayType } from './types'
 
 const getStatesInterval = (display: string, index: number, height: number) => {
   'worklet'
@@ -27,50 +25,79 @@ const getStatesInterval = (display: string, index: number, height: number) => {
       return []
   }
 }
-const colors = ['#00b5ad', '#2185D0', '#B5CC18', '#FBBD08', '#F2711C', '#DB2828', '#E03997', '#6435C9', '#A5673F', '#AAA', '#888', '#666', '#444', '#222', '#000']
+
+const getOpacityRangeOut = (display: string) => {
+  switch (display) {
+    case "TOP_BOTTOM":
+      return [0, 0.4, 1, 0.4, 0]
+    case "CENTER_ONLY":
+      return [0, 1, 0]
+    default:
+      return []
+  }
+}
+const getScaleRangeOut = (display: string) => {
+  switch (display) {
+    case "TOP_BOTTOM":
+      return [0, 0.4, 1, 0.4, 0]
+    case "CENTER_ONLY":
+      return [0, 1, 0]
+    default:
+      return []
+  }
+}
+
+// const colors = ['#00b5ad', '#2185D0', '#B5CC18', '#FBBD08', '#F2711C', '#DB2828', '#E03997', '#6435C9', '#A5673F', '#AAA', '#888', '#666', '#444', '#222', '#000']
+
 
 interface ItemProps<T> {
-  allowFontScaling?: boolean
-  display: "TOP_BOTTOM" | "CENTER_ONLY"
-  fontSize: number
-  height: number
+  itemHeight: number
   index: number
-  opacityRangeOut: number[]
-  scaleRangeOut: number[]
   scrollY: Animated.SharedValue<number>
   scrollX: Animated.SharedValue<number>
-  spaceBetween: number
-  textStyle?: TextStyle
-  // marginHorizontal?: number
   value: T
-  width: number
+  itemWidth: number
+  allowFontScaling?: boolean
+  containerStyle?: ViewStyle
+  discoverable?: boolean
+  display?: DisplayType
+  fontSize?: number
+  items?: T[]
+  marginHorizontalPercentage?: number
+  marginVerticalPercentage?: number
+  opacityRangeOut?: number[]
+  scaleRangeOut?: number[]
+  spaceBetween?: number
+  textStyle?: TextStyle
 }
 
 const Item = <T extends {}>({
   allowFontScaling = false,
-  display,
+  discoverable = true,
+  display = "TOP_BOTTOM",
   fontSize = 200,
-  height,
+  itemHeight,
   index,
   // marginHorizontal = 0,
-  opacityRangeOut,
-  scaleRangeOut,
+  opacityRangeOut = getOpacityRangeOut(display),
+  scaleRangeOut = getScaleRangeOut(display),
   scrollX,
   scrollY,
-  spaceBetween,
+  spaceBetween = 1 / 2.25,
   textStyle,
   value,
-  width,
+  itemWidth,
 }: ItemProps<T>) => {
+  const space = itemHeight * spaceBetween
   const animStyleContainer = useAnimatedStyle(() => {
     // console.log(`Item ${index}`)
-    const statesInterval = getStatesInterval(display, index, height)
+    const statesInterval = getStatesInterval(display, index, itemHeight)
 
     const top = interpolate(
       -scrollY.value,
-      [(index - 1) * height, (index) * height, (index + 1) * height],
-      // [(index - 1) * height, (index) * height, (index + 1) * height],
-      [(index - 1) * height + spaceBetween, (index) * height, (index + 1) * height - spaceBetween],
+      [(index - 1) * itemHeight, (index) * itemHeight, (index + 1) * itemHeight],
+      // [(index - 1) * itemHeight, (index) * itemHeight, (index + 1) * itemHeight],
+      [(index - 1) * itemHeight + space, (index) * itemHeight, (index + 1) * itemHeight - space],
       Extrapolate.CLAMP
     )
 
@@ -88,8 +115,8 @@ const Item = <T extends {}>({
     )
 
     return {
-      width: width + (-Math.min(scrollX.value, 0)),
-      height,
+      width: discoverable ? itemWidth + (-Math.min(scrollX.value, 0)) : itemWidth,
+      height: itemHeight,
       // backgroundColor: colors[index],
       opacity,
       transform: [
@@ -104,50 +131,42 @@ const Item = <T extends {}>({
     // console.log(`scrollX ${scrollX.value}`)
     return {
       // backgroundColor: colors[index],
-      left: Math.min(scrollX.value, 0)
+      // left: Math.min(scrollX.value, 0)
+      left: discoverable ? Math.min(scrollX.value, 0) : 0
     };
   });
 
   const pixelRatio = PixelRatio.get()
-  const widthContainerPx = width * pixelRatio
-  const heightContainerPx = height * pixelRatio
+  const widthContainerPx = itemWidth * pixelRatio
+  const heightContainerPx = itemHeight * pixelRatio
 
-  // const fontSize = 200
   const window = Dimensions.get('window')
   // height of iphone 12 pro max
   let coef = (2778 / (window.height * pixelRatio))
-  // if (coef > 1.5) {
-  //   coef /= 2
-  // }
 
-  // const coef = fontSize * (heightContainerPx / pixelRatio)
   let fontScaleDp = ((heightContainerPx + widthContainerPx) * (fontSize / coef)) / (heightContainerPx + widthContainerPx) / pixelRatio
-
-  // fontScaleDp = PixelRatio.roundToNearestPixel(fontScaleDp)
-
-
-
-
-
 
   return (
     <>
-      <Animated.View style={[styles.container, animStyleContainer]}>
+      <Animated.View style={[
+        {
+          justifyContent: "center",
+        },
+        animStyleContainer
+      ]}>
         <Animated.Text
           {...{
             allowFontScaling,
             ellipsizeMode: 'tail',
             numberOfLines: 1,
             style: [
-              styles.title,
               {
+                color: "white",
                 fontSize: fontScaleDp,
-                // fontSize: height * 0.77 * fontScale,
-                // padding: 10
-                // paddingVertical: 10,
+                textAlign: "center",
               },
+              animStyleTextItem,
               textStyle,
-              animStyleTextItem
             ]
           }}
         >
@@ -157,23 +176,5 @@ const Item = <T extends {}>({
     </>
   );
 };
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: "center",
-    // borderWidth: 1,
-    // borderColor: 'white'
-    // backgroundColor: 'cyan',
-    // overflow: 'hidden',h
-  },
-  title: {
-    color: "white",
-    textAlign: "center",
-    // paddingHorizontal: 20,
-    // marginHorizontal: 50,
-    // fontFamily: 'cookie',
-    // backgroundColor: "green",
-    // fontSize: 40,
-  },
-});
 
 export default Item

@@ -12,15 +12,16 @@
     // "target": "es6",
     "module": "ESNext",
     "declaration": true,
-    "outDir": "./lib",
+    // "outDir": "./lib/commonjs/", // commented because of bob warning
     "strict": true,
     "jsx": "react-native",
     "skipLibCheck": true,
     "moduleResolution": "node",
-    "allowSyntheticDefaultImports": true
+    "allowSyntheticDefaultImports": true,
+    // "removeComments": true,
   },
   "include": [
-    "src/index.ts"
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
