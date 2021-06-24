@@ -18,6 +18,7 @@
     "dropdown"
   ],
   "scripts": {
+    "tscw": "tsc -w -outDir ./lib/commonjs",
     "watch": "nodemon -e js,ts,tsx --watch src --exec yarn prepare",
     "release": "release-it",
     "prepare": "bob build"
