@@ -4,10 +4,10 @@
   "main": "node_modules/expo/AppEntry.js",
   "private": true,
   "scripts": {
-    "start": "watchman watch-del-all && expo start",
-    "android": "watchman watch-del-all && expo start --android",
-    "ios": "watchman watch-del-all && expo start --ios",
-    "web": "watchman watch-del-all && expo start --web",
+    "start": "expo start",
+    "android": "expo start --android",
+    "ios": "expo start --ios",
+    "web": "expo start --web",
     "eject": "expo eject"
   },
   "dependencies": {
